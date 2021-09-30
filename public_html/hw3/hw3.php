@@ -27,6 +27,7 @@
         nav{
             background-color: lightblue;
             border: 2px solid blue;
+
         }
         a:hover{
             color: red;
@@ -40,6 +41,11 @@
         }
         h1{
             text-transform: capitalize;
+        }
+        body{
+            background-color: lightcoral;
+            border-style: dashed;
+            border-color: white;
         }
     </style>
     <!-- make the necessary edits above this line -->
