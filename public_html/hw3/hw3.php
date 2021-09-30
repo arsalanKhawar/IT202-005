@@ -35,6 +35,12 @@
         ul li{
             list-style-type: "✓";
         }
+        a{
+            text-transform: capitalize;
+        }
+        h1{
+            text-transform: capitalize;
+        }
     </style>
     <!-- make the necessary edits above this line -->
 
