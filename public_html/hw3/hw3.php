@@ -15,6 +15,7 @@
                 //TODO: add code for processing the current selection 
 
                 //Note: likely you'll want to call updateCurrentPage towards the end
+                document.getElementById("h3").innerHTML = "New text!";
             }, 100);
         }
     </script>
