@@ -8,9 +8,13 @@
         window.addEventListener("load", () => {
             console.log("loaded via javascript");
             //TODO: add any extra onload processing you may need here
+            tag = document.getElementsByTagName("a");
+            for(x of tag){
+                x.addEventListener("click", getCurrentSelection);
+            }
         });
-        function getCurrentSelection() {
-            setTimeout(() => {
+        function getCurrentSelection(event) {
+            setTimeout(() => {updateCurrentPage(event.srcElement.innerText)
                 //added this delay here as some solutions may require it to update properly (i.e., click code may complete before the navigation changes)
                 //TODO: add code for processing the current selection 
 
