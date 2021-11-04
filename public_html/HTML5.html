@@ -43,7 +43,7 @@ var enemies = [];
 var enemyBaseSpeed = 2;
 function makeEnemy() {
   var enemyX = canvas.width;
-  var enemySize = 65 - 5 * score;
+  var enemySize = 65 - 10 * score;
   if(enemySize < 10){
       enemySize = 5;
   }
@@ -161,6 +161,14 @@ function draw() {
   // Move and draw the enemies
   enemies.forEach(function(enemy) {
     enemy.x -= enemy.s;
+    enemy.y -= Math.round((Math.random() * 12)) -6;
+   
+    if(enemy.y <= 0 ){
+        enemy.y = 0;
+    }
+    if(enemy.y >= 320){
+        enemy.y = 320;
+    }
     if (enemy.x < 0) {
       gameOver = true;
     }
