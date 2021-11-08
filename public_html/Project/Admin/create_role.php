@@ -12,7 +12,7 @@ if (isset($_POST["name"]) && isset($_POST["description"])) {
     $desc = se($_POST, "description", "", false);
     if (empty($name)) {
         flash("Name is required", "warning");
-    } else {
+    } else {    
         $db = getDB();
         $stmt = $db->prepare("INSERT INTO Roles (name, description, is_active) VALUES(:name, :desc, 1)");
         try {
