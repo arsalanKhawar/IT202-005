@@ -26,7 +26,7 @@
     - [] \(10/11/2021) User Registration 
     -  List of Evidence of Feature Completion
         - Status: Completed
-        - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+        - Direct Link: https://ak78.herokuapp.com/Project/register.php
         - Pull Requests
         - https://github.com/arsalanKhawar/IT202-005/pull/15
         - Screenshots 
@@ -43,7 +43,7 @@
     - [] \(10/11/2021) User Login 
     -  List of Evidence of Feature Completion
         - Status: Completed
-        - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
+        - Direct Link: https://ak78.herokuapp.com/Project/login.php
         - Pull Requests
         - https://github.com/arsalanKhawar/IT202-005/pull/15
         - Screenshots
@@ -53,7 +53,7 @@
             - shows Password is required. Also shows friendly error message.
         - ![image](https://user-images.githubusercontent.com/89936960/141237985-2760ca40-64ea-497b-8078-95ee6ebf7e99.png)
             - Users who are not logged in can not view these tabs
-    - [] \(10/11/2021) Feature Title (from the proposal bullet point, if it's a sub-point indent it properly)
+    - [] \(10/11/2021) Logout (from the proposal bullet point, if it's a sub-point indent it properly)
     -  List of Evidence of Feature Completion
         - Status: Completed
         - Direct Link: (Direct link to the file or files in heroku prod for quick testing (even if it's a protected page))
