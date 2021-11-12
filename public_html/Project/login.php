@@ -17,6 +17,7 @@ require(__DIR__ . "/../../partials/nav.php"); ?>
         //ensure it returns false for an error and true for success
 
         return true;
+        
     }
 </script>
 <?php
