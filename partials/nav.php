@@ -40,6 +40,9 @@ require_once(__DIR__ . "/../lib/functions.php");
             <li><a href="<?php echo get_url('admin/create_role.php'); ?>">Create Role</a></li>
             <li><a href="<?php echo get_url('admin/list_roles.php'); ?>">List Roles</a></li>
             <li><a href="<?php echo get_url('admin/assign_roles.php'); ?>">Assign Roles</a></li>
+        <?php endif; ?>
+
+        <?php if (has_role("Admin") or has_role("Seller")) : ?>
             <li><a href="<?php echo get_url('admin/add_items.php'); ?>">Add Items</a></li>
             <li><a href="<?php echo get_url('admin/list_item.php'); ?>">List Items</a></li>
         <?php endif; ?>

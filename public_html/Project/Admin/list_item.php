@@ -2,7 +2,7 @@
 //note we need to go up 1 more directory
 require(__DIR__ . "/../../../partials/nav.php");
 
-if (!has_role("Admin") or !has_role("Seller")) {
+if (!has_role("Admin") and !has_role("Seller")) {
     flash("You don't have permission to view this page", "warning");
     die(header("Location: $BASE_PATH" . "home.php"));
 }
@@ -50,7 +50,7 @@ if (isset($_POST["itemName"])) {
 
 
                     <td>
-                        <a href="edit_item.php?id=<?php se($record, "id"); ?>">Edit</a>
+                        <a href="edit_items.php?id=<?php se($record, "id"); ?>">Edit</a>
                     </td>
                 </tr>
             <?php endforeach; ?>

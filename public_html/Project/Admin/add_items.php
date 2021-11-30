@@ -2,10 +2,12 @@
 //note we need to go up 1 more directory
 require(__DIR__ . "/../../../partials/nav.php");
 
-if (!has_role("Admin") or !has_role("Seller")) {
+if ( !has_role("Seller") and !has_role("Admin")) {
     flash("You don't have permission to view this page", "warning");
     die(header("Location: $BASE_PATH" . "home.php"));
 }
+
+
 if (isset($_POST["submit"])) {
     $id = save_data("BGD_Items", $_POST);
     if ($id > 0) {
