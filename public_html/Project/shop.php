@@ -4,7 +4,7 @@ require(__DIR__ . "/../../partials/nav.php");
 $results = [];
 $db = getDB();
 if(has_role("Admin") or has_role("Seller")){
-    $stmt = $db->prepare("SELECT id, name, description, cost, stock, image FROM BGD_Items ");
+    $stmt = $db->prepare("SELECT id, name, description, unit_price, stock, image FROM BGD_Items ");
     try {
         $stmt->execute();
         $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -17,7 +17,7 @@ if(has_role("Admin") or has_role("Seller")){
 }
 
 else{
-    $stmt = $db->prepare("SELECT id, name, description, cost, stock, image FROM BGD_Items WHERE stock > 0 AND visibility = 1");
+    $stmt = $db->prepare("SELECT id, name, description, unit_price, stock, image FROM BGD_Items WHERE stock > 0 AND visibility = 1");
     try {
         $stmt->execute();
         $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -43,7 +43,6 @@ else{
             <div class="col">
                 <div class="card bg-dark">
                     <div class="card-header">
-                        Placeholder
                     </div>
                     <?php if (se($item, "image", "", false)) : ?>
                         <img src="<?php se($item, "image"); ?>" class="card-img-top" alt="...">
