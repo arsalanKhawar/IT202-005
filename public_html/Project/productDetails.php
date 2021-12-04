@@ -33,9 +33,35 @@ try {
                 </div>
             <?php endif; ?>
         <?php endforeach; ?>
-        <input class="btn btn-primary" type="submit" value="Update" name="submit" />
+
+        <form method="POST">
+            <label for="desired_quantity">Quantity:</label>
+            <input type="number" name="desired_quantity">
+            <input type="hidden" name="product_id" value="<?php se($result['id'], 'id'); ?>" />
+            <input type="hidden" name="user_id" value="<?php se(get_user_id(), 'user_id'); ?>" />
+            <input type="hidden" name="unit_cost" value="<?php se($result['unit_price'], 'user_id'); ?>" />
+            <input type="submit" value="Add to cart">
+        </form>
+
 </div>
 
 <?php
+if (isset($_POST["product_id"]) && isset($_POST["user_id"]) && isset($_POST["unit_cost"]) && isset($_POST["desired_quantity"])) {
+    $product_id = se($_POST, "product_id", "", false);
+    $user_id = se($_POST, "user_id", "", false);
+    $unit_cost = se($_POST, "unit_cost", "", false);
+    $desired_quantity = se($_POST, "desired_quantity", "", false);
+
+    $db = getDB();
+    $stmt = $db->prepare("INSERT INTO User_cart (product_id, user_id, unit_cost, desired_quantity) VALUES(:product_id, :user_id, :unit_cost, :desired_quantity)");
+    try {
+        $stmt->execute([":product_id" => $product_id, ":user_id" => $user_id, ":unit_cost" => $unit_cost, ":desired_quantity" => $desired_quantity]);
+        flash("Added to cart!");
+    } catch (Exception $e) {
+        flash("There was a problem");
+        
+    }
+}
+
 require(__DIR__ . "/../../partials/flash.php");
 ?>
