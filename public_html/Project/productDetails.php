@@ -58,7 +58,12 @@ if (isset($_POST["product_id"]) && isset($_POST["user_id"]) && isset($_POST["uni
         $stmt->execute([":product_id" => $product_id, ":user_id" => $user_id, ":unit_cost" => $unit_cost, ":desired_quantity" => $desired_quantity]);
         flash("Added to cart!");
     } catch (Exception $e) {
+        if(is_logged_in()){
         flash("There was a problem");
+        }
+        else{
+            flash("You need to be logged in to add items to the cart.");
+        }
         
     }
 }
