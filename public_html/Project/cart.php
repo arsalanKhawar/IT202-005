@@ -55,7 +55,12 @@ try {
                             <td> $ <?php se($results[$index]["unit_price"] * $results[$index]["desired_quantity"])  ?></td>
                             
                     <td>
-                        <a href="productDetails.php?id=<?php se($results[$index], "product_id"); ?>">Product Details</a>
+                        <a href="productDetails.php?id=<?php se($results[$index], "product_id"); ?>">Product Details</a> 
+                        <form method="POST">
+                            <input type="hidden" name="product_id2" value="<?php se($results[$index]["product_id"], 'product_id'); ?>" />
+                            <input type="hidden" name="user_id2" value="<?php se(get_user_id(), 'user_id'); ?>" />
+                            <input type="submit" value="Delete from cart">
+                        </form>                   
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -64,6 +69,25 @@ try {
 </div>
 
 <?php 
+    if (isset($_POST["product_id2"]) && isset($_POST["user_id2"])) {
+        $product_id = se($_POST, "product_id2", "", false);
+        $product_id = se($_POST, "product_id2", "", false);
+        $user_id = se($_POST, "user_id2", "", false);
+        $db = getDB();
+        $stmt = $db->prepare("DELETE FROM User_cart WHERE product_id = :product_id2 AND user_id = :user_id2");
+        try {
+            $stmt->execute([":product_id2" => $product_id, ":user_id2" => $user_id]);
+            flash("removed from cart!");
+        } catch (Exception $e) {
+            if(is_logged_in()){
+            flash("There was a problem");
+            }
+            else{
+                flash("You need to be logged in to remove items from the cart.");
+            }
+            
+        }
+    }
     
     foreach ($results as $index => $record){
         $total = $total + $results[$index]["unit_price"] * $results[$index]["desired_quantity"];
