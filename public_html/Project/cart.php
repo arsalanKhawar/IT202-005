@@ -24,14 +24,9 @@ try {
 <div class="container-fluid">
     <h1>Your Cart</h1>
 
-    <form method="POST" class="row row-cols-lg-auto g-3 align-items-center">
-        <div class="input-group mb-3">
-            <input class="form-control" type="search" name="itemName" placeholder="Item Filter" />
-            <input class="btn btn-primary" type="submit" value="Search" />
-        </div>
-    </form>
+    
     <?php if (count($results) == 0) : ?>
-        <p>No results to show</p>
+        <p>Your Cart is Empty</p>
     <?php else : ?>
         <table class="table text-light">
             <?php foreach ($results as $index => $record) : ?>
@@ -59,7 +54,7 @@ try {
                         <form method="POST">
                             <input type="hidden" name="product_id2" value="<?php se($results[$index]["product_id"], 'product_id'); ?>" />
                             <input type="hidden" name="user_id2" value="<?php se(get_user_id(), 'user_id'); ?>" />
-                            <input type="submit" value="Delete from cart">
+                            <input type="submit" value="Remove from cart">
                         </form>                   
                     </td>
                 </tr>
@@ -71,13 +66,13 @@ try {
 <?php 
     if (isset($_POST["product_id2"]) && isset($_POST["user_id2"])) {
         $product_id = se($_POST, "product_id2", "", false);
-        $product_id = se($_POST, "product_id2", "", false);
         $user_id = se($_POST, "user_id2", "", false);
         $db = getDB();
         $stmt = $db->prepare("DELETE FROM User_cart WHERE product_id = :product_id2 AND user_id = :user_id2");
         try {
             $stmt->execute([":product_id2" => $product_id, ":user_id2" => $user_id]);
             flash("removed from cart!");
+            
         } catch (Exception $e) {
             if(is_logged_in()){
             flash("There was a problem");
@@ -97,8 +92,45 @@ try {
 <br>
 <br>
 <br>
+<?php if(!count($results)==0) : ?>
+    <form method="POST">
+        <input type="hidden" name="user_id3" value="<?php se(get_user_id(), 'user_id'); ?>" />
+        <input type="submit" value="Remove all from cart">
+    </form>           
+<?php endif; ?>
+<?php 
+
+    if (isset($_POST["user_id3"])) {
+        $user_id = se($_POST, "user_id3", "", false);
+        $db = getDB();
+        $stmt = $db->prepare("DELETE FROM User_cart WHERE user_id = :user_id3");
+        try {
+            $stmt->execute([":user_id3" => $user_id]);
+            flash("removed all from cart!");
+            
+        } catch (Exception $e) {
+            if(is_logged_in()){
+            flash("There was a problem");
+            }
+            else{
+                flash("You need to be logged in to remove items from the cart.");
+            }
+            
+        }
+    }
+    
+    foreach ($results as $index => $record){
+        $total = $total + $results[$index]["unit_price"] * $results[$index]["desired_quantity"];
+    }
+?>
+
+<br>
+<br>
+<br>
+<br>
 <h2>Your total is: <?php se($total) ?></h2>
 
+        
 <?php
 require(__DIR__ . "/../../partials/flash.php");
 ?>

@@ -54,16 +54,7 @@ else{
                     </div>
                     <div class="card-footer">
                         Cost: <?php se($item, "unit_price"); ?>
-                        <button onclick="purchase('<?php se($item, 'id'); ?>')" class="btn btn-primary">Product Details</button>
-                        
-                        
-                                
-                                    <a href="productDetails.php?id=<?php se($item, "id"); ?>">Product Details</a>
-                                
-                            
-
-                        
-                        <button onclick="purchase('<?php se($item, 'id'); ?>')" class="btn btn-primary">Purchase</button>
+                            <a href="productDetails.php?id=<?php se($item, "id"); ?>">Product Details</a>
                     </div>
                 </div>
             </div>
