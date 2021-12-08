@@ -119,9 +119,7 @@ try {
         }
     }
     
-    foreach ($results as $index => $record){
-        $total = $total + $results[$index]["unit_price"] * $results[$index]["desired_quantity"];
-    }
+    
 ?>
 
 <br>
