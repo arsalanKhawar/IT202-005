@@ -1,0 +1,1 @@
+ALTER TABLE BGD_Items ADD visibility TINYINT(1) DEFAULT 0;
