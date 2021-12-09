@@ -5,7 +5,7 @@ require(__DIR__ . "/../../partials/nav.php");
 <?php
 if (is_logged_in(true)) {
     echo "Welcome home, " . get_username();
-    //comment this out if you don't want to see the session variables
+
 } else {
     echo "You're not logged in";
 }
