@@ -31,7 +31,7 @@ require_once(__DIR__ . "/../lib/functions.php");
         <?php if (is_logged_in()) : ?>
             <li><a href="<?php echo get_url('home.php'); ?>">Home</a></li>
             <li><a href="<?php echo get_url('profile.php'); ?>">Profile</a></li>
-            <li><a href="<?php echo get_url('shop.php'); ?>">Shop</a></li>
+            <li><a href="<?php echo get_url('shop.php'); ?>">Admin Shop</a></li>
             <li><a href="<?php echo get_url('cart.php'); ?>">Cart</a></li>
         <?php endif; ?>
         <?php if (!is_logged_in()) : ?>
