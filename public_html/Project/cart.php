@@ -235,7 +235,7 @@ if($isInStock){
     }
     else if (isset($_POST["payment_method"]) && isset($_POST["user_id"]) && isset($_POST["cart_total"])) {
         //add items into OrderItems
-        if (isset($_POST["payment_method"]) && isset($_POST["user_id"]) && isset($_POST["cart_total"])) {
+        
 
             
         foreach ($results as $index => $record){
@@ -262,9 +262,17 @@ if($isInStock){
                             
                         }
                 }
-            
+            //update inventory stock
+            $newStock = $results[$index]["stock"] - $results[$index]["desired_quantity"];
+            $itname = $results[$index]["name"];
+            $stmt = $db->prepare("UPDATE BGD_Items SET stock = $newStock WHERE id = :id ");
+            try {
+                $stmt->execute([":id" => $results[$index]["id"] ]);
+            } catch (PDOException $e) {
+                flash("<pre>" . var_export($e, true) . "</pre>");
+            }
         }
-        }
+        
 
         //add order ot Orders
 
@@ -287,9 +295,6 @@ if($isInStock){
             }
             
         }
-        
-
-
         
     }
 }
