@@ -176,18 +176,18 @@ input[type=submit]:hover {
 
         
 <?php
-$result = [];
+$results = [];
 $columns = get_columns("User_cart");
 $ignore = ["id", "modified", "created"];
 $db = getDB();
+$userid = get_user_id();
 //get the item
-$id = se($_GET, "id", -1, false);
-$stmt = $db->prepare("SELECT * FROM User_cart where id =:id");
+$stmt = $db->prepare("SELECT * FROM User_cart INNER JOIN BGD_Items ON User_cart.product_id=BGD_Items.id WHERE user_id =:user_id");
 try {
-    $stmt->execute([":id" => $id]);
-    $r = $stmt->fetch(PDO::FETCH_ASSOC);
+    $stmt->execute([":user_id" => $userid]);
+    $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
     if ($r) {
-        $result = $r;
+        $results = $r;
     }
 } catch (PDOException $e) {
     flash("<pre>" . var_export($e, true) . "</pre>");
@@ -220,87 +220,79 @@ try {
 </div>
 
 <?php
-
-
-if(se($_POST, "total_price" , "", false) != se($_POST, "cart_total" , "", false)) {
-flash("invalid cart total");
-}
-else if (isset($_POST["payment_method"]) && isset($_POST["user_id"]) && isset($_POST["cart_total"])) {
-    //add items into OrderItems
-    if (isset($_POST["payment_method"]) && isset($_POST["user_id"]) && isset($_POST["cart_total"])) {
-
-        $results = [];
-        $columns = get_columns("User_cart");
-        $ignore = ["id", "modified", "created"];
-        $db = getDB();
-        $userid = get_user_id();
-        //get the item
-        $stmt = $db->prepare("SELECT * FROM User_cart INNER JOIN BGD_Items ON User_cart.product_id=BGD_Items.id WHERE user_id =:user_id");
-        try {
-            $stmt->execute([":user_id" => $userid]);
-            $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            if ($r) {
-                $results = $r;
-            }
-        } catch (PDOException $e) {
-            flash("<pre>" . var_export($e, true) . "</pre>");
-        }
-    foreach ($results as $index => $record){
-                   
-    
-        foreach ($record as $column => $value){ 
-            if (!in_array($column, $ignore))
-            {
-                if($results[$index]["unit_cost"] != $results[$index]["unit_price"]){
-                    $total = $total - ($results[$index]["unit_cost"] - $results[$index]["unit_price"]);
-                    $results[$index]["unit_cost"] = $results[$index]["unit_price"];
-                    flash("the price of some of your items has changed. Price of " . $results[$index]["name"] . " is now". $results[$index]["unit_cost"] . ". New total is $" . $total);
-                }
-                   
-                    $stmt = $db->prepare("INSERT INTO OrderItems (product_id, order_id, unit_price, quntity) VALUES(:product_id, :order_id, :unit_cost, :quntity)");
-                    try {
-                        $stmt->execute([":product_id" => $results[$index]["product_id"], ":order_id" => $results[$index]["user_id"], ":unit_cost" => $results[$index]["unit_cost"], ":quntity" => $results[$index]["desired_quantity"]]);
-                    } catch (Exception $e) {
-                        if(is_logged_in()){
-                        flash("There was a problem");
-                        }
-                        else{
-                            flash("You need to be logged in to purchase.");
-                        }
-                        
-                    }
-            }
-        }
-      }
+$isInStock = true;
+foreach($results as $index => $record){
+    if($results[$index]["stock"] < $results[$index]["desired_quantity"] && isset($_POST["payment_method"]) && isset($_POST["user_id"]) && isset($_POST["cart_total"])){
+        flash($results[$index]["name"] . " is out of stock. There are only " . $results[$index]["stock"] . " units left. Please update your cart");
+        $isInStock = false;
     }
+}
 
-    //add order ot Orders
 
-    $address = se($_POST, "address", "", false) . ", " . se($_POST, "city", "", false) . ", " . se($_POST, "state", "", false) . " " . se($_POST, "zipcode", "", false);
-    $user_id = se($_POST, "user_id", "", false);
-    $total_price = se($_POST, "total_price", "", false);
-    $payment_method = se($_POST, "payment_method", "", false);
+if($isInStock){
+    if(se($_POST, "total_price" , "", false) != se($_POST, "cart_total" , "", false)) {
+    flash("invalid cart total");
+    }
+    else if (isset($_POST["payment_method"]) && isset($_POST["user_id"]) && isset($_POST["cart_total"])) {
+        //add items into OrderItems
+        if (isset($_POST["payment_method"]) && isset($_POST["user_id"]) && isset($_POST["cart_total"])) {
 
-    $db = getDB();
-    $stmt = $db->prepare("INSERT INTO Orders (user_id, total_price, address, payment_method) VALUES( :user_id, :total_price, :address, :payment_method)");
-    try {
-        $stmt->execute([":address" => $address, ":user_id" => $user_id, ":total_price" => $total_price, ":payment_method" => $payment_method]);
-        flash("purchased!");
-    } catch (Exception $e) {
-        if(is_logged_in()){
-        flash("There was a problem");
+            
+        foreach ($results as $index => $record){
+                    
+        
+                if (!in_array($column, $ignore))
+                {
+                    if($results[$index]["unit_cost"] != $results[$index]["unit_price"]){
+                        $total = $total - ($results[$index]["unit_cost"] - $results[$index]["unit_price"]);
+                        $results[$index]["unit_cost"] = $results[$index]["unit_price"];
+                        flash("the price of some of your items has changed. Price of " . $results[$index]["name"] . " is now". $results[$index]["unit_cost"] . ". New total is $" . $total);
+                    }
+                    
+                        $stmt = $db->prepare("INSERT INTO OrderItems (product_id, order_id, unit_price, quntity) VALUES(:product_id, :order_id, :unit_cost, :quntity)");
+                        try {
+                            $stmt->execute([":product_id" => $results[$index]["product_id"], ":order_id" => $results[$index]["user_id"], ":unit_cost" => $results[$index]["unit_cost"], ":quntity" => $results[$index]["desired_quantity"]]);
+                        } catch (Exception $e) {
+                            if(is_logged_in()){
+                            flash("There was a problem");
+                            }
+                            else{
+                                flash("You need to be logged in to purchase.");
+                            }
+                            
+                        }
+                }
+            
         }
-        else{
-            flash("You need to be logged in to purchase.");
+        }
+
+        //add order ot Orders
+
+        $address = se($_POST, "address", "", false) . ", " . se($_POST, "city", "", false) . ", " . se($_POST, "state", "", false) . " " . se($_POST, "zipcode", "", false);
+        $user_id = se($_POST, "user_id", "", false);
+        $total_price = se($_POST, "total_price", "", false);
+        $payment_method = se($_POST, "payment_method", "", false);
+
+        $db = getDB();
+        $stmt = $db->prepare("INSERT INTO Orders (user_id, total_price, address, payment_method) VALUES( :user_id, :total_price, :address, :payment_method)");
+        try {
+            $stmt->execute([":address" => $address, ":user_id" => $user_id, ":total_price" => $total_price, ":payment_method" => $payment_method]);
+            flash("purchased!");
+        } catch (Exception $e) {
+            if(is_logged_in()){
+            flash("There was a problem");
+            }
+            else{
+                flash("You need to be logged in to purchase.");
+            }
+            
         }
         
+
+
+        
     }
-    
-
-
-    
 }
-
 
 
 require(__DIR__ . "/../../partials/flash.php");
