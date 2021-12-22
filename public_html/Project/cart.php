@@ -238,43 +238,10 @@ if($isInStock){
         
 
             
-        foreach ($results as $index => $record){
-                    
         
-                if (!in_array($column, $ignore))
-                {
-                    if($results[$index]["unit_cost"] != $results[$index]["unit_price"]){
-                        $total = $total - ($results[$index]["unit_cost"] - $results[$index]["unit_price"]);
-                        $results[$index]["unit_cost"] = $results[$index]["unit_price"];
-                        flash("the price of some of your items has changed. Price of " . $results[$index]["name"] . " is now". $results[$index]["unit_cost"] . ". New total is $" . $total);
-                    }
-                    
-                        $stmt = $db->prepare("INSERT INTO OrderItems (product_id, order_id, unit_price, quntity) VALUES(:product_id, :order_id, :unit_cost, :quntity)");
-                        try {
-                            $stmt->execute([":product_id" => $results[$index]["product_id"], ":order_id" => $results[$index]["user_id"], ":unit_cost" => $results[$index]["unit_cost"], ":quntity" => $results[$index]["desired_quantity"]]);
-                        } catch (Exception $e) {
-                            if(is_logged_in()){
-                            flash("There was a problem");
-                            }
-                            else{
-                                flash("You need to be logged in to purchase.");
-                            }
-                            
-                        }
-                }
-            //update inventory stock
-            $newStock = $results[$index]["stock"] - $results[$index]["desired_quantity"];
-            $itname = $results[$index]["name"];
-            $stmt = $db->prepare("UPDATE BGD_Items SET stock = $newStock WHERE id = :id ");
-            try {
-                $stmt->execute([":id" => $results[$index]["id"] ]);
-            } catch (PDOException $e) {
-                flash("<pre>" . var_export($e, true) . "</pre>");
-            }
-        }
         
 
-        //add order ot Orders
+        //add order to Orders
 
         $address = se($_POST, "address", "", false) . ", " . se($_POST, "city", "", false) . ", " . se($_POST, "state", "", false) . " " . se($_POST, "zipcode", "", false);
         $user_id = se($_POST, "user_id", "", false);
@@ -295,10 +262,88 @@ if($isInStock){
             }
             
         }
+
+        //get order id
+        $results2 = [];
+        $columns = get_columns("Orders");
+        $ignore = ["modified", "created"];
+        $db = getDB();
+        $userid = get_user_id();
+        //get the item
+        $stmt = $db->prepare("SELECT * FROM Orders  WHERE user_id =:user_id");
+        try {
+            $stmt->execute([":user_id" => $userid]);
+            $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if ($r) {
+                $results2 = $r;
+            }
+        } catch (PDOException $e) {
+            flash("<pre>" . var_export($e, true) . "</pre>");
+        }
+
+        //add to orderitems
+        foreach ($results as $index => $record){
+                    
         
+            if (!in_array($column, $ignore))
+            {
+                if($results[$index]["unit_cost"] != $results[$index]["unit_price"]){
+                    $total = $total - ($results[$index]["unit_cost"] - $results[$index]["unit_price"]);
+                    $results[$index]["unit_cost"] = $results[$index]["unit_price"];
+                    flash("the price of some of your items has changed. Price of " . $results[$index]["name"] . " is now". $results[$index]["unit_cost"] . ". New total is $" . $total);
+                }
+                
+                    $stmt = $db->prepare("INSERT INTO OrderItems (product_id, order_id, unit_price, quntity) VALUES(:product_id, :order_id, :unit_cost, :quntity)");
+                    try {
+                        $stmt->execute([":product_id" => $results[$index]["product_id"], ":order_id" => $results2[count($results2 )-1]["id"], ":unit_cost" => $results[$index]["unit_cost"], ":quntity" => $results[$index]["desired_quantity"]]);
+                    } catch (Exception $e) {
+                        if(is_logged_in()){
+                        flash("There was a problem");
+                        }
+                        else{
+                            flash("You need to be logged in to purchase.");
+                        }
+                        
+                    }
+            }
+        //update inventory stock
+        $newStock = $results[$index]["stock"] - $results[$index]["desired_quantity"];
+        $itname = $results[$index]["name"];
+        $stmt = $db->prepare("UPDATE BGD_Items SET stock = $newStock WHERE id = :id ");
+        try {
+            $stmt->execute([":id" => $results[$index]["id"] ]);
+        } catch (PDOException $e) {
+            flash("<pre>" . var_export($e, true) . "</pre>");
+        }
+    }
+
+
+        //delete cart
+        $stmt = $db->prepare("DELETE FROM User_cart WHERE user_id = :user_id");
+        try {
+            $stmt->execute([":user_id" => $user_id]);
+            flash("removed all from cart!");
+            
+        } catch (Exception $e) {
+            if(is_logged_in()){
+            flash("There was a problem");
+            }
+            else{
+                flash("You need to be logged in to remove items from the cart.");
+            }
+            
+        }
+
+        
+
     }
 }
-
+?>
+    <?php if (isset($_POST["payment_method"]) && isset($_POST["user_id"]) && isset($_POST["cart_total"])) : ?>
+        <a href="orderConfirmation.php?order_id=<?php se($results2[count($results2) -1 ]["id"]); ?>">Order Confirmation</a>
+    <?php endif; ?>
+<?php
 
 require(__DIR__ . "/../../partials/flash.php");
+
 ?>
