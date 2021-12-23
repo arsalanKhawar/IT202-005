@@ -10,10 +10,9 @@ $columns = get_columns("Orders");
 $ignore = ["id", "modified", "created", "user_id", "total_price", "visibility", "category", "description", "order_id", "product_id", "stock"];
 $db = getDB();
 //get the item
-$order_id = se($_GET, "order_id", -1, false);
-$stmt = $db->prepare("SELECT * FROM OrderItems INNER JOIN BGD_Items ON OrderItems.product_id= BGD_Items.id Inner Join Orders ON OrderItems.order_id = Orders.id WHERE order_id = :order_id");
+$stmt = $db->prepare("SELECT * FROM OrderItems INNER JOIN BGD_Items ON OrderItems.product_id= BGD_Items.id Inner Join Orders ON OrderItems.order_id = Orders.id");
 try {
-    $stmt->execute([":order_id" => $order_id]);
+    $stmt->execute();
     $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
     if ($r) {
         $results = $r;
@@ -21,7 +20,6 @@ try {
 } catch (PDOException $e) {
     flash("<pre>" . var_export($e, true) . "</pre>");
 }
-
 
 
 ?>
@@ -32,7 +30,7 @@ try {
 
 <div class="container-fluid">
         <table class="table text-light">
-            <h1>Thanks for shopping!</h1>
+            <h1>Purchase history</h1>
             <?php foreach ($results as $index => $record) : ?>
                 <?php if ($index == 0) : ?>
                     <thead>
@@ -41,7 +39,6 @@ try {
                                 <th><?php se($column); ?></th>
                             <?php endif; ?>
                         <?php endforeach; ?>
-                        <th>subtotal</th>
                     </thead>
                 <?php endif; ?>
                 <tr>
@@ -50,12 +47,13 @@ try {
                             <td><?php se($value, null, "N/A"); ?></td>
                         <?php endif; ?>
                     <?php endforeach; ?>
-                    <td> $ <?php se($results[$index]["unit_price"] * $results[$index]["quntity"])  ?></td>
-
+                    <td>
+                        <a href="orderConfirmation.php?order_id=<?php se($results[$index], "order_id"); ?>">Order Confirmation</a> 
+                                       
+                    </td>
                 </tr>
             <?php endforeach; ?>
         </table>
-    <h2>Your total is: <?php se($results[0]["total_price"]) ?></h2>
 
 </div>
 

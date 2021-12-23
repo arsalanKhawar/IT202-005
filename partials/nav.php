@@ -33,6 +33,7 @@ require_once(__DIR__ . "/../lib/functions.php");
             <li><a href="<?php echo get_url('profile.php'); ?>">Profile</a></li>
             <li><a href="<?php echo get_url('cart.php'); ?>">Cart</a></li>
             <li><a href="<?php echo get_url('shop.php'); ?>">Shop</a></li>
+            <li><a href="<?php echo get_url('purchaseHistory.php'); ?>">Purchase History</a></li>
 
         <?php endif; ?>
         <?php if (!is_logged_in()) : ?>
@@ -50,6 +51,8 @@ require_once(__DIR__ . "/../lib/functions.php");
             <li><a href="<?php echo get_url('admin/add_items.php'); ?>">Add Items</a></li>
             <li><a href="<?php echo get_url('admin/list_item.php'); ?>">List Items</a></li>
             <li><a href="<?php echo get_url('shop.php'); ?>">Admin Shop</a></li>
+            <li><a href="<?php echo get_url('all_purchase_History.php'); ?>">All Purchase History</a></li>
+
 
         <?php endif; ?>
         <?php if (is_logged_in()) : ?>
