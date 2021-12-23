@@ -1,0 +1,2 @@
+ALTER TABLE Users ADD privacy VARCHAR(10); 
+ALTER TABLE Orders DROP COLUMN privacy;

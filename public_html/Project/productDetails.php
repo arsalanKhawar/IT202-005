@@ -3,7 +3,6 @@
 require(__DIR__ . "/../../partials/nav.php");
 
 
-
 $result = [];
 $columns = get_columns("BGD_Items");
 $ignore = ["id", "modified", "created", "visibility", "image"];
@@ -67,6 +66,65 @@ if (isset($_POST["product_id"]) && isset($_POST["user_id"]) && isset($_POST["uni
         
     }
 }
+
+
+
+$results = [];
+$columns = get_columns("Ratings");
+//echo "<pre>" . var_export($columns, true) . "</pre>";
+$ignore = ["id", "created", "user_id", "product_id", "password", "modified", "privacy", "email"];
+
+$db = getDB();
+//get the item
+$stmt = $db->prepare("SELECT * FROM Ratings INNER JOIN Users ON Ratings.user_id= Users.id WHERE product_id = :product_id");
+try {
+    $stmt->execute([":product_id" => $id]);
+    $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if ($r) {
+        $results = $r;
+    }
+} catch (PDOException $e) {
+    flash("<pre>" . var_export($e, true) . "</pre>");
+}
+
+
+?>
+
+
+
+
+
+<div class="container-fluid">
+        <table class="table text-light">
+            <h1>Ratings</h1>
+            <?php foreach ($results as $index => $record) : ?>
+                <?php if ($index == 0) : ?>
+                    <thead>
+                        <?php foreach ($record as $column => $value) : ?>
+                            <?php if (!in_array($column, $ignore)) : ?>
+                                <th><?php se($column); ?></th>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                        <th>Email</th>
+                    </thead>
+                <?php endif; ?>
+                <tr>
+                    <?php foreach ($record as $column => $value) : ?>
+                        <?php if (!in_array($column, $ignore)) : ?>
+                            <th><?php se($value, null, "N/A"); ?></th>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                    <?php if ($results[$index]["privacy"] == "public") : ?>
+                        <th><?php se(get_user_email()) ?></th>
+                    <?php endif; ?>
+
+                </tr>
+            <?php endforeach; ?>
+        </table>
+
+</div>
+
+<?php
 
 require(__DIR__ . "/../../partials/flash.php");
 ?>
