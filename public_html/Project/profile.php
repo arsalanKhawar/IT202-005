@@ -8,10 +8,12 @@ if (!is_logged_in()) {
 if (isset($_POST["save"])) {
     $email = se($_POST, "email", null, false);
     $username = se($_POST, "username", null, false);
+    $privacy = se($_POST, "privacy", null, false);
 
-    $params = [":email" => $email, ":username" => $username, ":id" => get_user_id()];
+
+    $params = [":email" => $email, ":username" => $username, ":privacy" => $privacy, ":id" => get_user_id()];
     $db = getDB();
-    $stmt = $db->prepare("UPDATE Users set email = :email, username = :username where id = :id");
+    $stmt = $db->prepare("UPDATE Users set email = :email, username = :username, privacy = :privacy where id = :id");
     try {
         $stmt->execute($params);
     } catch (Exception $e) {
@@ -30,7 +32,7 @@ if (isset($_POST["save"])) {
         }
     }
     //select fresh data from table
-    $stmt = $db->prepare("SELECT id, email, username from Users where id = :id LIMIT 1");
+    $stmt = $db->prepare("SELECT id, email, username, privacy from Users where id = :id LIMIT 1");
     try {
         $stmt->execute([":id" => get_user_id()]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -38,6 +40,8 @@ if (isset($_POST["save"])) {
             //$_SESSION["user"] = $user;
             $_SESSION["user"]["email"] = $user["email"];
             $_SESSION["user"]["username"] = $user["username"];
+            $_SESSION["user"]["privacy"] = $user["privacy"];
+
         } else {
             flash("User doesn't exist", "danger");
         }
@@ -85,6 +89,8 @@ if (isset($_POST["save"])) {
 <?php
 $email = get_user_email();
 $username = get_username();
+$privacy = get_user_privacy();
+
 ?>
 <form method="POST" onsubmit="return validate(this);">
     <div class="mb-3">
@@ -94,6 +100,10 @@ $username = get_username();
     <div class="mb-3">
         <label for="username">Username</label>
         <input type="text" name="username" id="username" value="<?php se($username); ?>" />
+    </div>
+    <div class="mb-3">
+        <label for="privacy">Privacy</label>
+        <input type="text" name="privacy" id="privacy" value="<?php se($privacy); ?>" />
     </div>
     <!-- DO NOT PRELOAD PASSWORD -->
     <div>Password Reset</div>

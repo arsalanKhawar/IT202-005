@@ -47,7 +47,7 @@ try {
                 <tr>
                     <?php foreach ($record as $column => $value) : ?>
                         <?php if (!in_array($column, $ignore)) : ?>
-                            <td><?php se($value, null, "N/A"); ?></td>
+                            <th><?php se($value, null, "N/A"); ?></th>
                         <?php endif; ?>
                     <?php endforeach; ?>
                     <td> $ <?php se($results[$index]["unit_price"] * $results[$index]["quntity"])  ?></td>
