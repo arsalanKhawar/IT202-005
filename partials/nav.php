@@ -41,13 +41,13 @@ require_once(__DIR__ . "/../lib/functions.php");
             <li><a href="<?php echo get_url('register.php'); ?>">Register</a></li>
             <li><a href="<?php echo get_url('shop.php'); ?>">Shop</a></li>
         <?php endif; ?>
-        <?php if (has_role("Admin")) : ?>
+        <?php if (has_role("Admin") and is_logged_in()) : ?>
             <li><a href="<?php echo get_url('admin/create_role.php'); ?>">Create Role</a></li>
             <li><a href="<?php echo get_url('admin/list_roles.php'); ?>">List Roles</a></li>
             <li><a href="<?php echo get_url('admin/assign_roles.php'); ?>">Assign Roles</a></li>
         <?php endif; ?>
 
-        <?php if (has_role("Admin") or has_role("Seller")) : ?>
+        <?php if ((has_role("Admin") or has_role("Seller")) and is_logged_in()) : ?>
             <li><a href="<?php echo get_url('admin/add_items.php'); ?>">Add Items</a></li>
             <li><a href="<?php echo get_url('admin/list_item.php'); ?>">List Items</a></li>
             <li><a href="<?php echo get_url('shop.php'); ?>">Admin Shop</a></li>
