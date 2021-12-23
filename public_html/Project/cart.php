@@ -88,10 +88,10 @@ input[type=submit]:hover {
                 <tr>
                     <?php foreach ($record as $column => $value) : ?>
                         <?php if (!in_array($column, $ignore)) : ?>
-                            <td><?php se($value, null, "N/A"); ?></td>
+                            <th><?php se($value, null, "N/A"); ?></th>
                         <?php endif; ?>
                     <?php endforeach; ?>
-                            <td> $ <?php se($results[$index]["unit_price"] * $results[$index]["desired_quantity"])  ?></td>
+                            <th> $ <?php se($results[$index]["unit_price"] * $results[$index]["desired_quantity"])  ?></th>
                             
                     <td>
                         <a href="productDetails.php?id=<?php se($results[$index], "product_id"); ?>">Product Details</a> 
