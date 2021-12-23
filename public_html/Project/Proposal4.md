@@ -414,7 +414,89 @@
 </table>
 </td>
 </tr></td></tr></table>
-- Milestone 4
+
+<table>
+<tr><td>milestone 4</td></tr><tr><td>
+<table>
+<tr><td>F1 - User can set their profile to be public or private (will need another column in Users table) ()</td></tr>
+<tr><td>Status: complete</td></tr>
+<tr><td>Links:<p>
+
+ [https://ak78.herokuapp.com/Project/profile.php](https://ak78.herokuapp.com/Project/profile.php)</p></td></tr>
+<tr><td>PRs:<p>
+
+ [https://github.com/arsalanKhawar/IT202-005/pull/58](https://github.com/arsalanKhawar/IT202-005/pull/58)</p></td></tr>
+<tr><td>
+<table>
+<tr><td>F1 - Users table updated</td></tr>
+<tr><td>Status: 
+<img width="100" height="20" src="https://via.placeholder.com/400x120/009955/fff?text=completed"></td></tr>
+
+<tr><td>
+<img width="768px" src="https://user-images.githubusercontent.com/89936960/147286868-f07d0db0-19ed-4ca3-8af3-5c9c042c74ed.png">
+<p>users table now has privacy column</p>
+</td></tr>
+
+<tr><td>
+<img width="768px" src="https://user-images.githubusercontent.com/89936960/147286931-fd8c3490-c347-41d0-ba6a-6f7951a2da77.png">
+<p>User can update his privacy setting</p>
+</td></tr>
+
+<tr><td>
+<img width="768px" src="https://user-images.githubusercontent.com/89936960/147287027-e829133d-7126-4b2f-947a-059dffffa230.png">
+<p>user ak78's email can be seen because he has a public setting.
+ak47's email cannot be seen</p>
+</td></tr>
+
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<table>
+<tr><td>F2 - Ratings ()</td></tr>
+<tr><td>Status: complete</td></tr>
+<tr><td>Links:<p>
+
+ [https://ak78.herokuapp.com/Project/purchaseHistory.php](https://ak78.herokuapp.com/Project/purchaseHistory.php)</p><p>
+
+ [https://ak78.herokuapp.com/Project/rate.php?product_id=2](https://ak78.herokuapp.com/Project/rate.php?product_id=2)</p><p>
+
+ [https://ak78.herokuapp.com/Project/productDetails.php?id=2](https://ak78.herokuapp.com/Project/productDetails.php?id=2)</p></td></tr>
+<tr><td>PRs:<p>
+
+ [https://github.com/arsalanKhawar/IT202-005/pull/58](https://github.com/arsalanKhawar/IT202-005/pull/58)</p></td></tr>
+<tr><td>
+<table>
+<tr><td>F2 - new table called ratings</td></tr>
+<tr><td>Status: 
+<img width="100" height="20" src="https://via.placeholder.com/400x120/009955/fff?text=completed"></td></tr>
+
+<tr><td>
+<img width="768px" src="https://user-images.githubusercontent.com/89936960/147287260-27e97e22-08a7-4891-a3d2-2533731dcad6.png">
+<p>ratings table</p>
+</td></tr>
+
+<tr><td>
+<img width="768px" src="https://user-images.githubusercontent.com/89936960/147287324-9a89bc8e-c274-479d-b32e-0c7649f5fbb0.png">
+<p>user can rate items by clicking the button in purchase history</p>
+</td></tr>
+
+<tr><td>
+<img width="768px" src="https://user-images.githubusercontent.com/89936960/147287426-517ec867-be23-44f3-a1a9-708bd5812f81.png">
+<p>user gives a number and text rating</p>
+</td></tr>
+
+<tr><td>
+<img width="768px" src="https://user-images.githubusercontent.com/89936960/147287503-cb14e439-87ec-400d-a21e-71e6503c4e79.png">
+<p>user can veiw the ratings of a product in its product details page.</p>
+</td></tr>
+
+</td>
+</tr>
+</table>
+</td>
+</tr></td></tr></table>
 ### Intructions
 #### Don't delete this
 1. Pick one project type
