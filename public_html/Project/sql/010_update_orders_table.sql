@@ -1,0 +1,1 @@
+ALTER TABLE Orders ADD payment_method VARCHAR(30); 
