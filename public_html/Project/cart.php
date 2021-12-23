@@ -222,7 +222,8 @@ try {
 <?php
 $isInStock = true;
 foreach($results as $index => $record){
-    if($results[$index]["stock"] < $results[$index]["desired_quantity"] && isset($_POST["payment_method"]) && isset($_POST["user_id"]) && isset($_POST["cart_total"])){
+
+    if($results[$index]["stock"] < $results[$index]["desired_quantity"] && isset($_POST["payment_method"]) ){
         flash($results[$index]["name"] . " is out of stock. There are only " . $results[$index]["stock"] . " units left. Please update your cart");
         $isInStock = false;
     }
