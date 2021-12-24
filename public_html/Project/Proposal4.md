@@ -1,8 +1,8 @@
 # Project Name: shop
 ## Project Summary: This project will create a simple e-commerce site for users. 
-## Github Link: (Prod Branch of Project Folder)
-## Project Board Link: 
-## Website Link: (Heroku Prod of Project folder)
+## Github Link: https://github.com/arsalanKhawar/IT202-005
+## VideoLink: https://mediaspace.njit.edu/media/finalDemo/1_au43iybm 
+## Website Link: https://ak78.herokuapp.com/Project/login.php
 ## Your Name: Arsalan Khawar
 
 <!--

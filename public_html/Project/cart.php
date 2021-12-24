@@ -6,7 +6,7 @@ if (!is_logged_in()) {
 $total = 0;
 $results = [];
 $columns = get_columns("User_cart");
-$ignore = ["id", "modified", "created", "user_id", "description" , "image", "category", "product_id", "visibility", "stock", "unit_price"];
+$ignore = ["id", "modified", "created", "user_id", "description" , "image", "category", "product_id", "visibility", "stock", "unit_cost"];
 $db = getDB();
 $userid = get_user_id();
 //get the item
